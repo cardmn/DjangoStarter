@@ -1,0 +1,46 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+ ---
+description: Python代码规范
+globs: **/*.py
+alwaysApply: false
+---
+# DjangoStarter 开发规范
+
+## 框架概述
+DjangoStarter v3是一个基于Django的快速开发框架，集成了Django-Ninja、代码生成器、Taiwindcss等多种功能，旨在提高开发效率。
+
+## 技术栈要求
+- Python 3.11
+- Django 5.2
+- django-ninja 1.1.0+
+- PDM包管理
+- pnpm前端依赖管理
+- conda 本地环境 `conda activate django-starter`
+  
+## 框架核心原则
+- **约定优于配置**：遵循框架的目录结构和命名约定
+- **代码生成优先**：优先使用内置代码生成器来创建基础代码
+- **模块化设计**：功能封装成独立模块，减少耦合
+- **API优先**：以API为中心设计应用，前后端分离
+- **统一响应格式**：API返回值统一包装，遵循规定的格式
+
+## 开发流程
+1. 使用`django-admin startapp`在apps目录下创建新应用
+2. 设计模型（models.py），遵循模型设计规范
+3. 使用`python manage.py autocode`生成基础代码
+4. 在config/apis.py中注册API路由
+5. 根据需要编写自定义业务逻辑
+6. 编写测试用例（可使用代码生成器生成基础测试）
+7. 运行测试确保功能正常
+
+## 特殊注意事项
+- 使用django-ninja而非DRF开发API
+- 配置文件拆分在config/settings目录下，修改配置时注意选择正确的组件文件
+- 认证使用JWT方式，配置在django_starter.py中
+- 前端资源使用Gulp管理，修改后需要运行`gulp move`
+- 数据库迁移前确保模型设计合理，避免频繁变更
+- 

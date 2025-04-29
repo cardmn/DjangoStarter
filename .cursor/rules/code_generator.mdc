@@ -1,0 +1,97 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: 代码生成器使用规范
+globs: **/*.py
+alwaysApply: false
+---
+
+# 代码生成器使用规范
+
+## 代码生成器概述
+DjangoStarter框架内置了强大的业务代码生成器，可以根据模型定义自动生成APIs、Schemas、测试用例等代码，极大提高开发效率。
+
+## 使用流程
+1. 设计并编写`models.py`文件，定义好模型结构
+2. 将应用添加到`INSTALLED_APPS`中
+3. 运行代码生成命令：`python manage.py autocode [app_label] [verbose_name]`
+4. 在`config/apis.py`中注册生成的API路由
+5. 根据需要调整和完善生成的代码
+
+## 命令参数说明
+- `app_label`: 应用的名称，如`blog`、`shop`
+- `verbose_name`: 应用的友好名称，通常是中文，如`博客`、`商城`
+
+## 生成的文件结构
+代码生成器会在应用目录下生成/更新以下文件：
+```
+[app_name]/
+├─ apis/                # API相关代码
+│  ├─ [model1].py       # 模型1的API实现
+│  ├─ [model2].py       # 模型2的API实现
+│  ├─ __init__.py       # 路由聚合
+│  └─ schemas.py        # 请求和响应Schema
+├─ tests/               # 测试代码
+│  ├─ test_[model1].py  # 模型1的测试用例
+│  └─ test_[model2].py  # 模型2的测试用例
+├─ admin.py             # 管理后台配置
+└─ __init__.py          # 应用初始化
+```
+
+## 模型设计要求
+为了充分利用代码生成器，模型设计应遵循以下规范：
+- 每个字段必须设置`verbose_name`
+- 实现`__str__`方法便于管理后台显示
+- 定义`Meta`内部类，至少包含`verbose_name`和`verbose_name_plural`
+- 外键字段明确指定`on_delete`行为
+- 字段命名清晰，遵循命名规范
+
+## API生成规则
+代码生成器会为每个模型创建以下API端点：
+- `GET /api/[app_name]/[model]s`：获取列表，支持分页和过滤
+- `GET /api/[app_name]/[model]s/{id}`：获取详情
+- `POST /api/[app_name]/[model]s`：创建记录
+- `PUT /api/[app_name]/[model]s/{id}`：更新记录
+- `PATCH /api/[app_name]/[model]s/{id}`：部分更新记录
+- `DELETE /api/[app_name]/[model]s/{id}`：删除记录
+
+## Schema生成规则
+- 输入Schema命名为`Create[Model]Schema`和`Update[Model]Schema`
+- 输出Schema命名为`[Model]Schema`和`[Model]ListSchema`
+- 自动处理模型关系，外键转为ID字段
+- 自动添加创建和更新时间等元数据字段
+
+## 测试用例生成
+- 自动生成每个API端点的测试用例
+- 使用工厂模式创建测试数据
+- 包含成功和失败场景的测试
+- 测试认证和权限控制
+
+## 代码生成器扩展能力
+代码生成器支持扩展和定制：
+- 通过在模型上添加特殊注释提供生成提示
+- 支持排除某些模型或字段不生成代码
+- 支持自定义生成模板
+- 可以扩展生成自定义业务逻辑
+
+## 生成代码的修改原则
+- 生成的代码可以手动修改和增强
+- 一旦手动修改，应该避免再次生成覆盖
+- 考虑使用继承或组合方式扩展生成的代码
+- 关键业务逻辑应在生成代码基础上增强
+
+## 最佳实践
+- 先设计好模型再生成代码，避免频繁重新生成
+- 复杂的业务逻辑在生成的代码基础上添加
+- 生成代码后进行代码审查，确保符合业务需求
+- 优先使用代码生成器生成基础CRUD操作
+- 特殊或复杂的API单独开发，不使用代码生成器
+
+## 注意事项
+- 代码生成会覆盖已有的文件，确保重要更改已备份
+- 生成前检查模型是否符合代码生成要求
+- 生成后检查代码质量，适当调整
+- 特别复杂的模型关系可能需要手动调整生成的代码

@@ -40,8 +40,8 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'Actors',
                 'db_table': 'demo_actor',
                 'ordering': ['name'],
-                'unique_together': {('name', 'name')},
-                'index_together': {('name', 'name')},
+                'unique_together': {('name', 'birth_date')},
+                'index_together': {('name', 'birth_date')},
             },
         ),
         migrations.CreateModel(

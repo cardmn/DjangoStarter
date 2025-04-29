@@ -1,0 +1,322 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# UI设计规范（苹果风格）
+
+## 设计理念
+- **简约至上**：追求简洁、直观的界面设计，避免不必要的装饰元素
+- **层次感**：利用光影、层级和微妙的动效创造深度感
+- **精致细节**：关注微交互和视觉细节，体现品质感
+- **一致性**：在各平台保持设计语言的一致性，建立品牌认知
+- **以内容为中心**：设计应当凸显内容，而非界面本身
+
+## 颜色系统
+
+### 主色调
+- **主色**：使用苹果风格的高饱和度蓝色 `#0071e3` 作为主要强调色
+- **辅助色**：配合中性色调，如白、灰、黑等
+- **灰阶**：灰色调应精细分级，建议至少5个层级
+
+### Tailwind配置
+```javascript
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          DEFAULT: '#0071e3',
+          dark: '#0051a2',
+          light: '#147ce5'
+        },
+        neutral: {
+          50: '#f9f9f9',
+          100: '#f3f3f3',
+          200: '#e5e5e5',
+          300: '#d4d4d4',
+          400: '#a3a3a3',
+          500: '#737373',
+          600: '#525252',
+          700: '#404040',
+          800: '#262626',
+          900: '#171717',
+          950: '#0a0a0a'
+        }
+      }
+    }
+  }
+}
+```
+
+## 排版系统
+
+### 字体选择
+- **系统字体优先**：iOS使用SF Pro，Android上使用Roboto，Web上使用系统默认无衬线字体
+- **字重变化**：使用字重变化（而非不同字体）来创建层次感
+
+### 字体大小
+- **明确的类型层级**：建立清晰的标题、副标题、正文、小字体层级
+- **适合移动设备的尺寸**：基础字体大小16px，标题根据重要性逐级增大
+
+### Tailwind配置
+```javascript
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: [
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'Roboto',
+          'Helvetica Neue',
+          'Arial',
+          'sans-serif'
+        ]
+      },
+      fontSize: {
+        'display': ['48px', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '700' }],
+        'title1': ['40px', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '700' }],
+        'title2': ['32px', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '700' }],
+        'title3': ['24px', { lineHeight: '1.1', fontWeight: '600' }],
+        'headline': ['17px', { lineHeight: '1.3', fontWeight: '600' }],
+        'body': ['17px', { lineHeight: '1.5', fontWeight: '400' }],
+        'caption': ['14px', { lineHeight: '1.4', fontWeight: '400' }],
+        'footnote': ['12px', { lineHeight: '1.4', fontWeight: '400' }],
+      }
+    }
+  }
+}
+```
+
+## 间距与布局
+
+### 栅格系统
+- **多列栅格**：桌面端使用12列栅格，移动端使用4列栅格
+- **一致的间距比例**：使用8px为基础的间距系统
+
+### 容器尺寸
+- **最大宽度限制**：内容区域设置最大宽度，防止在超宽屏幕上过度拉伸
+- **边距随设备变化**：小屏设备边距较小(16px)，大屏边距较大(32px或更多)
+
+### Tailwind配置
+```javascript
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      spacing: {
+        '4xs': '2px',
+        '3xs': '4px',
+        '2xs': '8px',
+        'xs': '12px',
+        'sm': '16px',
+        'md': '24px',
+        'lg': '32px',
+        'xl': '48px',
+        '2xl': '64px',
+        '3xl': '96px',
+        '4xl': '128px',
+      },
+      maxWidth: {
+        'content': '1440px',
+      }
+    }
+  }
+}
+```
+
+## 组件设计
+
+### 按钮
+- **主要按钮**：圆角矩形，背景色为主色，白色文字，悬停时轻微变暗
+- **次要按钮**：轮廓型按钮，只有边框和文字，背景透明
+- **小型按钮**：在空间有限的区域使用，保持最小点击区域尺寸
+
+### 卡片
+- **轻微阴影**：使用微妙的阴影创造层次感，不要过度使用强阴影
+- **圆角一致**：所有卡片组件使用一致的圆角半径
+- **内边距统一**：保持卡片内部边距的一致性
+
+### 表单元素
+- **简约设计**：输入框使用细边框或无边框设计，聚焦时显示主色边框
+- **清晰的标签**：使用清晰的标签和提示文字
+
+### 导航
+- **简洁导航栏**：顶部导航栏保持简洁，使用细线分隔或浅色背景分隔内容
+- **标签栏**：移动端底部使用标签栏，图标简洁且有辨识度
+
+## 图像与图标
+
+### 图像处理
+- **高质量图像**：使用高分辨率、清晰的图像
+- **一致的处理风格**：所有图像应保持一致的处理风格，如相似的饱和度、对比度
+- **图像圆角**：与UI组件保持一致的圆角半径
+
+### 图标系统
+- **线性图标**：优先使用线性图标，粗细一致
+- **最小细节**：移除不必要的细节，保持图标简洁易识别
+- **网格对齐**：所有图标应基于相同的网格系统设计，保持视觉一致性
+
+### 推荐图标库
+- **Heroicons**：简洁的线性图标，配合Tailwind使用
+- **SF Symbols**：苹果风格的图标系统，适合iOS应用
+
+## 响应式设计
+
+### 断点设置
+- **移动优先**：采用移动优先的设计方法
+- **常见断点**：sm(640px)、md(768px)、lg(1024px)、xl(1280px)、2xl(1536px)
+
+### 不同设备的适配
+- **移动设备**：单列布局，较大点击目标，简化界面
+- **平板设备**：2-3列布局，适度利用额外空间
+- **桌面设备**：多列布局，更丰富的交互方式
+
+## 动效与交互
+
+### 微动效
+- **自然过渡**：使用自然、流畅的过渡效果，不要过于生硬或夸张
+- **反馈动效**：点击、滑动等操作应有恰当的反馈动效
+- **加载状态**：使用优雅的加载动画，降低用户等待感
+
+### 交互原则
+- **即时反馈**：用户操作后应有即时的视觉反馈
+- **可预测性**：交互行为应符合用户预期
+- **一致性**：相似的元素应有相似的交互方式
+
+## 微信小程序特殊考虑
+
+### 导航栏
+- **配合平台风格**：遵循微信小程序的导航栏设计规范
+- **简化标题**：导航栏标题简洁明了
+
+### 组件兼容
+- **使用平台组件**：尽可能使用微信小程序原生组件，保证兼容性
+- **降级方案**：为不支持的特性提供降级方案
+
+### 性能优化
+- **图片优化**：使用webp格式，控制图片大小
+- **按需加载**：页面内容按需加载，减少初始加载时间
+
+## 无障碍设计
+
+### 色彩对比
+- **足够对比度**：文本与背景的对比度应符合WCAG AA标准(至少4.5:1)
+- **不仅依赖颜色**：信息传达不仅依赖颜色，还应有形状、文本等辅助
+
+### 文本大小
+- **可缩放文本**：使用相对单位(rem)，支持文本缩放
+- **最小字号**：正文最小字号不小于14px
+
+## 推荐的Tailwind CSS组件库
+
+### 首选推荐
+- **ShadeUI**：精美的开源组件库，设计优雅，完全免费
+  - 官网：https://shadeui.com/
+  - 特点：设计优雅，API简洁，支持暗色模式，完全开源免费
+  - 适用场景：银行、金融、企业应用等需要专业感的项目
+
+### 其他优质选择
+- **Tailwind UI**：官方高质量组件库，提供完整设计系统
+- **Headless UI**：无样式组件库，可完全自定义样式
+- **daisyUI**：开源组件库，可自定义主题
+- **Flowbite**：现代化UI组件，支持深色模式
+
+### 苹果风格组件库
+- **Tailwind Apple**：仿苹果设计的Tailwind组件集合
+- **HyperUI**：包含多种苹果风格组件的开源库
+
+## ShadeUI组件集成指南
+
+### 安装方法
+```bash
+npm install @shadeui/react
+```
+
+### 配置集成
+```javascript
+// tailwind.config.js
+const { shadeuiTheme } = require('@shadeui/react');
+
+module.exports = {
+  content: [
+    // ...
+    './node_modules/@shadeui/react/**/*.{js,jsx,ts,tsx}', 
+  ],
+  theme: {
+    extend: {
+      // 与ShadeUI集成的配置
+      colors: {
+        primary: {
+          DEFAULT: '#0071e3',  // 苹果风格蓝色
+          // 其他色调...
+        },
+        // 其他颜色...
+      }
+    }
+  },
+  plugins: [
+    shadeuiTheme(),
+  ]
+}
+```
+
+### 常用组件示例
+```jsx
+// 卡片组件示例
+<Card>
+  <CardHeader>
+    <CardTitle>账户信息</CardTitle>
+  </CardHeader>
+  <CardBody>
+    <div className="flex justify-between">
+      <div>账号</div>
+      <div>**** **** **** 1234</div>
+    </div>
+    <div className="flex justify-between mt-4">
+      <div>余额</div>
+      <div className="text-xl font-semibold">¥10,000.00</div>
+    </div>
+  </CardBody>
+</Card>
+
+// 按钮组件示例
+<Button variant="primary">复制账号</Button>
+<Button variant="outline">查看详情</Button>
+
+// 列表组件示例
+<List>
+  <ListItem>
+    <ListItemPrefix>
+      <Icon name="arrow-up" className="text-green-500" />
+    </ListItemPrefix>
+    <div className="flex-1">
+      <div>收入 - 工资</div>
+      <div className="text-sm text-gray-500">2023-06-01</div>
+    </div>
+    <div className="text-green-500">+¥5,000.00</div>
+  </ListItem>
+  {/* 更多列表项 */}
+</List>
+```
+
+## 实现建议
+
+### 项目整合
+- 在`tailwind.config.js`中整合以上配置
+- 创建基础组件库，统一管理常用UI组件
+- 使用Storybook等工具记录和展示组件用法
+
+### 样式管理
+- 使用`@apply`抽象常用样式组合
+- 建立设计令牌(Design Tokens)管理系统
+- 集中管理样式定制，避免各处覆盖
+
+### 持续维护
+- 保持设计系统文档的更新
+- 定期审查现有组件，确保风格一致性
+- 收集用户反馈持续优化 

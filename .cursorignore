@@ -1,0 +1,31 @@
+# 匹配目录
+node_modules
+/node_modules
+# 匹配目录及文件
+build/
+dist/**
+# 匹配文件类型
+*.log
+log*.json
+# 匹配具体文件
+.env
+# IDE配置
+.idea
+.vscode
+# 其他
+.DS_Store
+.npmrc
+.yarnrc
+.venv
+
+
+书籍工具站/old 
+书籍工具站/old/**
+tmp/
+tmp
+电子资料/
+电子资料/**
+参考页面/
+新版页面UE/
+logs/
+venv/

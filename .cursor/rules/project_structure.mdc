@@ -1,0 +1,106 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: 项目结构规范
+globs: 
+alwaysApply: false
+---
+
+# 项目结构规范
+
+## 目录结构
+```
+DjangoStarter/
+├─ src/                 # 主要源代码
+│  ├─ apps/             # 所有业务应用
+│  │  ├─ [app_name]/    # 具体业务应用
+│  │  │  ├─ apis/       # API相关代码
+│  │  │  ├─ migrations/ # 数据库迁移
+│  │  │  ├─ tests/      # 测试代码
+│  │  │  ├─ admin.py    # 管理后台配置
+│  │  │  ├─ apps.py     # 应用配置
+│  │  │  ├─ models.py   # 数据模型
+│  │  │  └─ urls.py     # URL配置
+│  ├─ config/           # Django项目配置
+│  │  ├─ settings/      # 拆分的settings模块
+│  │  │  ├─ components/ # 配置组件
+│  │  │  └─ environments/ # 环境特定配置
+│  │  ├─ apis.py        # Ninja API配置
+│  │  └─ urls.py        # 主URL配置
+│  ├─ django_starter/   # 框架核心代码
+│  │  ├─ contrib/       # 可复用组件
+│  │  ├─ db/            # 数据库相关
+│  │  ├─ http/          # HTTP相关
+│  │  └─ middleware/    # 中间件
+│  ├─ static/           # 静态文件
+│  └─ templates/        # 模板文件
+├─ tests/               # 顶层测试
+├─ docs/                # 文档
+└─ ...                  # 其他配置文件
+```
+
+## 应用结构规范
+每个业务应用应遵循以下结构：
+```
+[app_name]/
+├─ apis/                # API代码
+│  ├─ [resource1].py    # 按资源分组API
+│  ├─ [resource2].py
+│  ├─ __init__.py       # 汇总路由
+│  └─ schemas.py        # 请求/响应模式
+├─ migrations/          # 自动生成的迁移文件
+├─ tests/               # 测试代码
+│  ├─ test_[resource1].py
+│  └─ test_[resource2].py
+├─ admin.py             # 管理后台配置
+├─ apps.py              # 应用配置
+├─ constants.py         # 常量定义
+├─ models.py            # 数据模型
+├─ permissions.py       # 权限配置
+└─ urls.py              # URL配置
+```
+
+## 命名规范
+- **文件命名**：全小写，单词间用下划线连接
+- **目录命名**：全小写，单词间用下划线连接
+- **应用命名**：简短、描述性的名称，如`auth`、`billing`、`catalog`
+- **模型命名**：单数形式的名词，如`User`、`Product`、`Order`
+- **API文件命名**：根据资源命名，如`user.py`、`product.py`
+
+## 配置规范
+- config/settings/components/中按功能拆分配置
+- 环境特定配置放在config/settings/environments/
+- 本地开发配置覆盖放在local.py中（不提交到版本控制）
+- 敏感配置通过环境变量或.env文件提供
+
+## 静态文件规范
+- CSS文件放在static/css/
+- JavaScript文件放在static/js/
+- 图片放在static/images/
+- 第三方库文件放在static/vendor/
+- 使用gulp自动化构建前端资源
+
+## 模板规范
+- 基础模板放在templates/下
+- 应用特定模板放在templates/[app_name]/
+- 片段(partials)放在templates/[app_name]/partials/
+- 使用继承减少代码重复
+- 分离结构、内容和样式
+
+## 文档规范
+- API文档通过类型提示和注释自动生成
+- 架构设计文档放在docs/architecture/
+- 用户指南放在docs/user-guide/
+- 开发指南放在docs/dev-guide/
+- 使用Markdown格式编写文档
+
+## 测试规范
+- 单元测试放在tests/unit/
+- 集成测试放在tests/integration/
+- 使用pytest作为测试框架
+- 测试文件名前缀为test_
+- 测试类名后缀为Test
+- 测试方法名前缀为test_

@@ -1,0 +1,103 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: 前端开发规范
+globs: **/*.js, **/*.css, **/*.jsx, **/*.tsx
+alwaysApply: false
+---
+# 前端开发规范
+
+## 技术栈
+- **CSS框架**：Tailwind CSS 3.4.6优先，兼容Bootstrap 4.6.1
+- **JS库**：Alpine.js 3.14.8(轻量交互)，jQuery 3.6.0(兼容性)，htmx 1.9.12(无刷新交互)，Vue.js 2.6.14(复杂组件)
+- **构建工具**：Gulp 4.0.2
+- **包管理**：pnpm (推荐)或yarn
+
+## 资源管理
+- 前端依赖通过package.json管理
+- 使用gulp自动化处理静态资源
+- 生产环境静态资源必须进行压缩处理
+- 第三方库通过npm安装，不直接提交到代码库
+- 修改前端资源后必须运行`gulp move`更新
+
+## 目录结构
+```
+src/
+├─ static/
+│  ├─ css/              # CSS文件
+│  │  ├─ tailwind.src.css  # Tailwind源文件
+│  │  └─ tailwind.prod.css # 编译后的Tailwind
+│  ├─ js/               # JavaScript文件
+│  ├─ images/           # 图片资源
+│  └─ vendor/           # 第三方库
+└─ templates/
+   ├─ _base.html        # 基础模板
+   └─ [app_name]/       # 按应用分组的模板
+```
+
+## CSS编码规范
+- 优先使用Tailwind CSS实用类
+- 自定义样式使用BEM命名规范
+- 使用CSS变量统一管理主题色和关键尺寸
+- 响应式设计基于Tailwind的断点设计
+- 避免使用!important覆盖样式
+
+## JavaScript编码规范
+- 使用ES6+语法
+- 使用严格模式：'use strict'
+- 使用const和let，避免var
+- 异步代码优先使用Promise和async/await
+- 使用解构赋值简化代码
+- 使用模板字符串代替字符串拼接
+
+## 模板规范
+- 使用Django模板语言或Jinja2
+- 模板必须继承自基础模板
+- 使用块(block)组织内容，提高复用性
+- 复杂逻辑放在视图中，保持模板简洁
+- 使用include引入重复的模板片段
+- 使用模板标签和过滤器简化模板逻辑
+
+## 响应式设计
+- 移动优先的设计理念
+- 使用Tailwind的响应式前缀(sm:, md:, lg:, xl:)
+- 关键布局使用Flexbox或Grid
+- 图片使用适当的响应式策略(如srcset)
+- 测试覆盖主流设备尺寸
+
+## 性能优化
+- 压缩CSS和JavaScript文件
+- 延迟加载非关键JavaScript
+- 图片优化(压缩、适当格式、懒加载)
+- 减少HTTP请求数量
+- 使用合适的缓存策略
+
+## 工具集成
+- 使用TailwindCSS的JIT编译模式
+- 使用PostCSS处理CSS
+- 使用Babel转换JavaScript
+- 使用ESLint检查代码质量
+- 使用Prettier格式化代码
+
+## 无障碍设计
+- 遵循WCAG 2.1指南
+- 使用语义化HTML标签
+- 提供替代文本给非文本内容
+- 确保足够的颜色对比度
+- 键盘可导航的界面
+
+## 跨浏览器兼容
+- 支持最新两个版本的主流浏览器
+- 使用Autoprefixer添加CSS前缀
+- 关键功能提供降级方案
+- 测试覆盖Chrome, Firefox, Safari, Edge
+
+## 前后端交互
+- API请求使用Fetch API或Axios
+- 统一处理API响应格式
+- 使用CSRF令牌保护表单和API
+- 实现适当的错误处理和用户反馈
+- 考虑网络延迟和离线场景

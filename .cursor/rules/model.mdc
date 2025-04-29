@@ -1,0 +1,109 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: 模型设计规范
+globs: **/*.py
+alwaysApply: false
+---
+# 模型设计规范
+
+## 基本原则
+- 一个模型对应一个数据表
+- 模型应专注于单一职责
+- 避免过度复杂的模型关系
+- 优先使用Django的内置字段类型
+- 遵循数据库设计的最佳实践
+
+## 模型定义规范
+- 类名使用CamelCase，单数形式
+- 每个字段必须有`verbose_name`
+- 实现`__str__`方法返回易读的对象表示
+- 必须定义`Meta`内部类，包含`verbose_name`和`verbose_name_plural`
+- 按照逻辑分组字段，并使用注释分隔
+- 常用字段放在前面，特殊字段放在后面
+
+## 字段命名规范
+- 字段名使用snake_case
+- 布尔字段名用`is_`或`has_`前缀
+- 外键字段使用单数形式
+- 多对多字段使用复数形式
+- 时间字段使用`_at`后缀（如`created_at`）
+- 日期字段使用`_date`后缀（如`birth_date`）
+
+## 字段类型选择
+- 文本：短文本用`CharField`，长文本用`TextField`
+- 数字：整数用`IntegerField`，小数用`DecimalField`（不用`FloatField`存储金额）
+- 日期时间：使用`DateField`、`TimeField`或`DateTimeField`
+- 布尔值：使用`BooleanField`
+- 选项：使用`choices`参数或`TextChoices`类
+- 关系：使用`ForeignKey`、`ManyToManyField`或`OneToOneField`
+
+## 关系设计
+- 外键必须指定`on_delete`行为
+- 多对多关系考虑是否需要中间模型
+- 多对多关系使用`related_name`避免反向查询冲突
+- 外键通常放在"多"的一方
+- 复杂关系考虑是否需要分解为多个简单关系
+
+## 字段参数设置
+- 合理设置`null`和`blank`参数
+- 根据业务需求设置`default`值
+- 使用`help_text`提供额外说明
+- 设置`db_index=True`给经常查询的字段
+- 合理使用`unique`和`unique_together`
+
+## 模型方法
+- 使用`@property`定义模型属性
+- 复杂查询逻辑放在`Manager`而非模型方法
+- 模型方法应只关注单个实例的操作
+- 通用方法放在抽象基类中共享
+- 重载`save()`方法时记得调用`super().save()`
+
+## 抽象基类
+- 创建抽象基类共享通用字段和方法
+- 常见的抽象基类如`TimeStampedModel`（包含创建和更新时间）
+- 抽象基类的Meta中设置`abstract = True`
+- 避免过深的继承层次
+
+## 示例模板
+```python
+from django.db import models
+
+
+class Author(models.Model):
+    # 基本信息
+    name = models.CharField('作者名称', max_length=100)
+    bio = models.TextField('作者简介', blank=True)
+    
+    # 联系信息
+    email = models.EmailField('邮箱', blank=True)
+    website = models.URLField('网站', blank=True)
+    
+    # 元数据
+    created_at = models.DateTimeField('创建时间', auto_now_add=True)
+    updated_at = models.DateTimeField('更新时间', auto_now=True)
+    
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = '作者'
+        verbose_name_plural = verbose_name
+        ordering = ['-created_at']
+```
+
+## 性能考虑
+- 避免使用通配符查询（如`objects.all()`）
+- 仅查询需要的字段（使用`values`或`values_list`）
+- 使用`select_related`和`prefetch_related`减少查询次数
+- 大批量操作使用`bulk_create`和`bulk_update`
+- 复杂过滤使用`Q`对象和`F`对象
+
+## 与代码生成器的配合
+- 设计模型时考虑代码生成器的规则
+- 模型中可添加特殊注释供代码生成器解析
+- 外键和多对多关系定义清晰，便于生成正确的CRUD操作
+- 复杂或特殊的字段添加注释说明处理方式

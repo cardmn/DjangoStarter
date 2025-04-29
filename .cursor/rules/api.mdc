@@ -1,0 +1,79 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: API开发规范
+globs: **/*.py
+alwaysApply: false
+---
+# API开发规范
+
+## 技术选择
+- 使用django-ninja而非Django REST Framework
+- 使用类型提示自动生成API文档
+- 使用自定义响应格式包装所有API返回值
+
+## API路径设计
+- 使用RESTful风格设计API
+- 路径使用小写单词，多个单词用连字符`-`分隔
+- 集合资源使用复数命名：`/api/users`
+- 单个资源使用ID标识：`/api/users/{id}`
+- 嵌套资源不超过2层：`/api/users/{id}/posts`
+
+## 响应格式规范
+```json
+{
+  "code": 200,       // HTTP状态码
+  "data": {},        // 响应数据
+  "message": "成功", // 响应消息
+  "success": true    // 操作是否成功
+}
+```
+
+## Schema开发规范
+- 为每个API端点定义请求和响应的Schema
+- Schema类命名为`[操作][资源名]Request/Response`
+- 使用Pydantic类型作为Schema的基础
+- 为每个字段添加描述性的注释
+- 字段必须指定类型，复杂类型使用typing模块
+
+## API端点开发
+- 在应用的apis目录下按资源分组创建路由
+- 使用装饰器标记HTTP方法和路径
+- 遵循CRUD操作对应的HTTP方法：
+  - GET: 查询
+  - POST: 创建
+  - PUT: 全量更新
+  - PATCH: 部分更新
+  - DELETE: 删除
+- 每个API方法必须有注释说明用途
+
+## 认证与权限
+- 使用JWT进行API认证
+- 在需要认证的接口上使用`@api.auth`装饰器
+- 自定义权限检查函数应放在应用的permissions.py文件中
+- 所有暴露的API必须考虑权限控制
+
+## 错误处理
+- 使用适当的HTTP状态码表示错误类型
+- 业务逻辑错误使用400系列状态码
+- 服务器错误使用500系列状态码
+- 提供详细的错误消息帮助调试
+
+## 接口限流
+- 公开API必须实现速率限制
+- 根据接口敏感度设置不同的限流策略
+- 使用django-ratelimit实施限流
+
+## 版本控制
+- 通过URL前缀区分API版本：`/api/v1/`
+- 不兼容更新时提升主版本号
+- 在一段时间内同时支持多个版本，给客户端迁移的时间
+
+## 文档生成
+- 每个API必须生成Swagger/OpenAPI文档
+- 通过类型提示和注释完善文档内容
+- 提供示例请求和响应
+- 标记废弃的API及其替代方案
