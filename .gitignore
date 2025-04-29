@@ -11,6 +11,10 @@ log/
 db.sqlite3
 yarn.lock
 src/static/css/tailwind.prod.css
+.cursor
+.cursor/
+.cursorignore
+.cursorignore/
 
 ### VisualStudioCode template
 .vscode/*
@@ -340,6 +344,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.cursorignore
+.pdm-python
+*.mdc 
 
 # Spyder project settings
 .spyderproject
